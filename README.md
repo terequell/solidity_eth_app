@@ -2,6 +2,4 @@ Pet-application for figure out how does work smart contract creating on Ethereum
 
 As a web-interface used React application builded by Vite.
 
-How to launch?
-
-yarn && yarn dev
+How to launch? Just bash yarn && yarn dev
