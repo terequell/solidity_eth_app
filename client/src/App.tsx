@@ -6,27 +6,40 @@ import { SendTransactionForm } from './components/SendTransactionForm';
 import { TransactionContext, TTransactionContext } from './contexts/TransactionContext';
 import Button from 'react-bootstrap/Button';
 import { useContext } from 'react';
+import { TFormData } from './components/SendTransactionForm/SendTransactionForm';
+import Card from 'react-bootstrap/Card';
+import { NoAccountConnectedWarning } from './components/NoAccountConnectedWarning';
 
 function App() {
-  const { connectWallet, currentAccount } = useContext<TTransactionContext>(TransactionContext);
+  const { currentAccount, contract, connectWallet, sendTransaction } = useContext<TTransactionContext>(TransactionContext);
 
   const handleConnectMetamask = () => {
     connectWallet();
   }
 
+  const handleSubmitForm = async (formData: TFormData) => {
+    await sendTransaction(formData);
+  }
+
   return (
-      <Container>
+      <Container className='mt-5'>
         <Row>
           <Col>
-              <SendTransactionForm />
+          {
+            currentAccount ? <SendTransactionForm onSubmit={handleSubmitForm} /> : <NoAccountConnectedWarning />
+          }
           </Col>
-        </Row>
-        <Row>
           <Col>
             {!currentAccount && 
-              <Button className='mt-2' variant="primary" onClick={handleConnectMetamask}>
+              <Button className='mt-4' variant="primary" onClick={handleConnectMetamask}>
                 Connect Metamask
               </Button>
+            }
+            {
+              currentAccount &&
+              <Card className="mt-4">
+                <Card.Body>Connected metamask: {currentAccount}</Card.Body>
+              </Card>
             }
           </Col>
         </Row>
